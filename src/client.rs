@@ -45,6 +45,18 @@ impl Client {
         boards.get_by_name(name)
     }
 
+    pub async fn get_board_by_id(&self, id: &str) -> Option<Board> {
+        let boards = self.get_boards().await?;
+        boards.get_by_id(id)
+    }
+
+    pub async fn get_list_by_id(&self, list_id: &str) -> Option<List> {
+        let url = format!("{REQ_PREFIX}/lists/{list_id}", list_id = list_id);
+        let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
+        let list = resp.json().await.ok()?;
+        Some(list)
+    }
+
     pub async fn get_lists(&self, board_id: &str) -> Option<Vec<List>> {
         let url = format!("{REQ_PREFIX}/boards/{board_id}/lists/?",);
         let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
@@ -188,4 +200,22 @@ impl Client {
             None
         }
     }
+
+    pub async fn add_comment_to_card(&self, card: Card, comment: &str) -> Option<Card> {
+        let url = format!("{REQ_PREFIX}/cards/{}/actions/comments?", &card.id);
+        let form: Vec<(&str, &str)> = vec![
+            ("text", comment),
+            self.auth[0],
+            self.auth[1],
+        ];
+
+        let resp = self.client.post(&url).form(&form).send().await.ok()?;
+        if resp.status() == reqwest::StatusCode::OK {
+            let card = self.get_cards(&card.id_list).await?.get_by_id(&card.id)?;
+            Some(card)
+        } else {
+            None
+        }
+    }
+
 }

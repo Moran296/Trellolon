@@ -9,7 +9,7 @@ pub struct List {
     pub id: String,
     pub name: String,
     #[serde(rename = "idBoard")]
-    pub id_board: String,
+    pub board_id: String,
     pub closed: bool,
 }
 

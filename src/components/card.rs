@@ -36,6 +36,10 @@ impl Card {
     pub async fn add_label(self, label: &Label) -> Option<Card> {
         Client::get().add_label_to_card(self, &label.id).await
     }
+
+    pub async fn add_comment(self, comment: &str) -> Option<Card> {
+        Client::get().add_comment_to_card(self, comment).await
+    }
 }
 
 #[async_trait]
