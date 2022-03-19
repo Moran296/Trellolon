@@ -1,6 +1,7 @@
 use crate::client::Client;
 use crate::components::Component;
 use crate::components::List;
+use crate::Label;
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
@@ -25,5 +26,20 @@ impl Component for Board {
     }
     fn id(&self) -> String {
         self.id.clone()
+    }
+}
+
+impl Board {
+    pub async fn get_labels(&self) -> Option<Vec<Label>> {
+        Client::get().get_labels(&self.id).await
+    }
+
+    pub async fn is_label_color_available(&self, color: &str) -> bool {
+        let labels = self.get_labels().await;
+        if labels.is_none() {
+            return true;
+        }
+
+        labels.unwrap().iter().all(|label| label.color != color)
     }
 }

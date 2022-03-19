@@ -101,7 +101,7 @@ impl Client {
         }
     }
 
-    pub async fn get_lables(&self, board_id: &str) -> Option<Vec<Label>> {
+    pub async fn get_labels(&self, board_id: &str) -> Option<Vec<Label>> {
         let url = format!("{REQ_PREFIX}/boards/{board_id}/labels/?",);
         let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
         let labels = resp.json().await.ok()?;
