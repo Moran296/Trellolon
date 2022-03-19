@@ -65,6 +65,18 @@ impl Creatable for Label {
     async fn create(&self, father: &Self::Father) -> Option<Self> {
         Client::get().create_label(&father.id, &self).await
     }
+
+    fn has_father(&self) -> bool {
+        self.board_id != ""
+    }
+
+    async fn get_father(&self) -> Option<Self::Father> {
+        if !self.has_father() {
+            return None;
+        }
+
+        Client::get().get_board_by_id(&self.board_id).await
+    }
 }
 
 #[async_trait]

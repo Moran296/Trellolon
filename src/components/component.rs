@@ -10,6 +10,11 @@ pub trait Creatable: Sized {
     type Father;
 
     async fn create(&self, father: &Self::Father) -> Option<Self>;
+    fn has_father(&self) -> bool;
+    fn is_created(&self) -> bool {
+        self.has_father()
+    }
+    async fn get_father(&self) -> Option<Self::Father>;
 }
 
 pub trait GetByNameAndId: Sized {

@@ -49,6 +49,18 @@ impl Creatable for Card {
     async fn create(&self, father: &Self::Father) -> Option<Self> {
         Client::get().create_card(&father.id, &self).await
     }
+
+    fn has_father(&self) -> bool {
+        self.id_list != ""
+    }
+
+    async fn get_father(&self) -> Option<Self::Father> {
+        if !self.has_father() {
+            return None;
+        }
+
+        Client::get().get_list_by_id(&self.id_list).await
+    }
 }
 
 #[async_trait]
