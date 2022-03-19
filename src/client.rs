@@ -218,4 +218,11 @@ impl Client {
         }
     }
 
+    pub async fn get_comments_from_card(&self, card: &Card) -> Option<Vec<card::Comment>> {
+        let url = format!("{REQ_PREFIX}/cards/{}/actions?filter=commentCard", &card.id);
+        let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
+        let comments = resp.json().await.ok()?;
+        Some(comments)
+    }
+
 }

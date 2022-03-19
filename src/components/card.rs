@@ -40,6 +40,21 @@ impl Card {
     pub async fn add_comment(self, comment: &str) -> Option<Card> {
         Client::get().add_comment_to_card(self, comment).await
     }
+
+    pub async fn get_comments(&self) -> Option<Vec<String>> {
+        let comments = Client::get().get_comments_from_card(&self).await;
+        if comments.is_none() {
+            return None;
+        }
+
+        let texts: Vec<String> = comments.unwrap().iter().map(|comment| comment.data.text.clone()).collect();
+
+        if texts.is_empty() {
+            return None;
+        }
+
+        Some(texts)
+    }
 }
 
 #[async_trait]
@@ -78,3 +93,18 @@ impl Component for Card {
         self.id.clone()
     }
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Data {
+    text: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Comment {
+    data: Data,
+}
+
+
+
+
+

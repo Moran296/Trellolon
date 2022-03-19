@@ -15,26 +15,16 @@ mod tests {
         let l = b.get_by_name("List1").await.unwrap();
         println!("{:#?}", l);
 
-        let c = l.get_all().await.unwrap();
+        let c = l.get_by_name("Moran the best").await.unwrap();
         println!("{:#?}", c);
 
-        let label = Label::new("laboo", label::LabelColor::Lime)
-            .create(&b)
-            .await
-            .unwrap();
-        println!("created label: {:#?}", label);
+        let comments = c.get_comments().await.unwrap();
+        println!("comments {:#?}", comments);
 
-        for card in c {
-            println!("card: {:#?}", card);
+        let c = c.add_comment("Hello, world!").await.unwrap();
 
-            if card.has_labels() {
-                let labels = card.get_all().await.unwrap();
-                println!("label {:#?}", labels);
-            } else {
-                let new_card = card.add_label(&label).await.unwrap();
-                println!("new card: {:#?}", new_card);
-            }
-        }
+        let comments = c.get_comments().await.unwrap();
+        println!("comments {:#?}", comments);
 
         assert!(true);
     }
