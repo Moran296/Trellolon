@@ -1,8 +1,4 @@
-use super::component::Component;
-use super::component::Creatable;
-use crate::client::Client;
-use crate::Board;
-use crate::Card;
+use crate::{client::Client, Creatable, Component, Board, Card};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use std::fmt;

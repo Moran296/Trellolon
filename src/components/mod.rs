@@ -7,5 +7,6 @@ pub mod list;
 pub use board::Board;
 pub use card::Card;
 pub use label::Label;
+pub use label::LabelColor;
 pub use list::List;
 pub use component::*;

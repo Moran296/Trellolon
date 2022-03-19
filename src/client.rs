@@ -4,7 +4,6 @@ use std::env;
 use crate::components::*;
 
 pub const REQ_PREFIX: &str = "https://api.trello.com/1";
-pub const _MEMBERS: &str = "members/me";
 
 #[derive(Debug, Clone)]
 pub struct Client {
@@ -18,9 +17,8 @@ lazy_static! {
     static ref TOKEN: String = env::var("TRELLO_TOKEN").unwrap();
 }
 
-//API
 impl Client {
-    pub fn new() -> Self {
+    fn new() -> Self {
         let client = reqwest::Client::new();
         let auth = [
             ("key", KEY.as_ref()),
@@ -34,7 +32,7 @@ impl Client {
     }
 
     pub async fn get_boards(&self) -> Option<Vec<Board>> {
-        let url = format!("{REQ_PREFIX}/{_MEMBERS}/boards?");
+        let url = format!("{REQ_PREFIX}/members/me/boards?");
         let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
         let boards = resp.json().await.ok()?;
         Some(boards)

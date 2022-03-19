@@ -1,8 +1,4 @@
-use super::component::Component;
-use super::component::Creatable;
-use crate::client::Client;
-use crate::components::Label;
-use crate::components::List;
+use crate::{client::Client, Creatable, Component, List, Label};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
