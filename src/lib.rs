@@ -1,6 +1,6 @@
 mod client;
-mod components;
-use components::*;
+pub mod components;
+pub use components::*;
 
 #[cfg(test)]
 mod tests {
@@ -8,7 +8,7 @@ mod tests {
 
     #[tokio::test]
     async fn i1() {
-        let c = client::Client::new();
+        let c = client::Client::get();
         let b = c.get_board("TestBoard").await.unwrap();
         println!("{:#?}", b);
 
