@@ -27,6 +27,10 @@ impl Component for Board {
 }
 
 impl Board {
+    pub async fn get(name: &str) -> Option<Self> {
+        Client::get().get_board(name).await
+    }
+
     pub async fn get_labels(&self) -> Option<Vec<Label>> {
         Client::get().get_labels(&self.id).await
     }
