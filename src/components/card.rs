@@ -25,6 +25,10 @@ impl Card {
         }
     }
 
+    pub async fn get(id: &str) -> Option<Self> {
+        Client::get().get_card_by_id(id).await
+    }
+
     pub fn has_labels(&self) -> bool {
         !self.labels.is_empty()
     }

@@ -62,6 +62,13 @@ impl Client {
         Some(lists)
     }
 
+    pub async fn get_card_by_id(&self, card_id: &str) -> Option<Card> {
+        let url = format!("{REQ_PREFIX}/cards/{card_id}", card_id = card_id);
+        let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
+        let card = resp.json().await.ok()?;
+        Some(card)
+    }
+
     pub async fn get_cards(&self, list_id: &str) -> Option<Vec<Card>> {
         let url = format!("{REQ_PREFIX}/lists/{list_id}/cards/?");
         let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
