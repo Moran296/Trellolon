@@ -13,6 +13,12 @@ pub struct List {
     pub closed: bool,
 }
 
+impl List {
+    pub async fn get(id: &str) -> Option<Self> {
+        Client::get().get_list_by_id(id).await
+    }
+}
+
 #[async_trait]
 impl Component for List {
     type Child = Card;
