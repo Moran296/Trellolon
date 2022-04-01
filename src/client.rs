@@ -20,10 +20,7 @@ lazy_static! {
 impl Client {
     fn new() -> Self {
         let client = reqwest::Client::new();
-        let auth = [
-            ("key", KEY.as_ref()),
-            ("token", TOKEN.as_ref()),
-        ];
+        let auth = [("key", KEY.as_ref()), ("token", TOKEN.as_ref())];
         Client { client, auth }
     }
 
@@ -107,8 +104,16 @@ impl Client {
     }
 
     pub async fn get_labels(&self, board_id: &str) -> Option<Vec<Label>> {
-        let url = format!("{REQ_PREFIX}/boards/{board_id}/labels/?",);
-        let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
+        let url = format!("{REQ_PREFIX}/boards/{board_id}/labels/?key={}&token={}", KEY.as_str(), TOKEN.as_str() );
+        println!("{url}");
+
+        let req = self.client.get(&url); //.form(&self.auth);
+        println!("{req:#?}");
+
+        let resp = req.send().await.ok()?;
+
+        println!("{resp:#?}");
+
         let labels = resp.json().await.ok()?;
         Some(labels)
     }
@@ -208,11 +213,7 @@ impl Client {
 
     pub async fn add_comment_to_card(&self, card: Card, comment: &str) -> Option<Card> {
         let url = format!("{REQ_PREFIX}/cards/{}/actions/comments?", &card.id);
-        let form: Vec<(&str, &str)> = vec![
-            ("text", comment),
-            self.auth[0],
-            self.auth[1],
-        ];
+        let form: Vec<(&str, &str)> = vec![("text", comment), self.auth[0], self.auth[1]];
 
         let resp = self.client.post(&url).form(&form).send().await.ok()?;
         if resp.status() == reqwest::StatusCode::OK {
@@ -229,5 +230,4 @@ impl Client {
         let comments = resp.json().await.ok()?;
         Some(comments)
     }
-
 }

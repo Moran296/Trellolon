@@ -1,4 +1,4 @@
-use crate::{client::Client, Creatable, Component, List, Label};
+use crate::{client::Client, Component, Creatable, Label, List};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
@@ -47,7 +47,11 @@ impl Card {
             return None;
         }
 
-        let texts: Vec<String> = comments.unwrap().iter().map(|comment| comment.data.text.clone()).collect();
+        let texts: Vec<String> = comments
+            .unwrap()
+            .iter()
+            .map(|comment| comment.data.text.clone())
+            .collect();
 
         if texts.is_empty() {
             return None;
@@ -103,8 +107,3 @@ pub struct Data {
 pub struct Comment {
     data: Data,
 }
-
-
-
-
-

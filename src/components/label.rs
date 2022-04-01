@@ -1,4 +1,4 @@
-use crate::{client::Client, Creatable, Component, Board, Card};
+use crate::{client::Client, Board, Card, Component, Creatable};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use std::fmt;

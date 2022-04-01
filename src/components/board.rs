@@ -1,4 +1,4 @@
-use crate::{client::Client, Component, List, Label};
+use crate::{client::Client, Component, Label, List};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
