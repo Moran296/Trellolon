@@ -17,6 +17,10 @@ mod tests {
 
         let c = l.get_by_name("Card1").await.unwrap();
 
+        let b_from_card = c.get_board().await.unwrap();
+        println!("{b_from_card:#?}");
+
+
         let list = match c.get_father().await {
             Some(list) => list,
             _ => panic!("No list found"),

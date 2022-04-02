@@ -1,4 +1,4 @@
-use crate::{client::Client, Component, Creatable, Label, List};
+use crate::{client::Client, Component, Creatable, Label, List, Board};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
@@ -8,6 +8,8 @@ pub struct Card {
     pub name: String,
     #[serde(rename = "idList")]
     pub id_list: String,
+    #[serde(rename = "idBoard")]
+    pub id_board: String,
     #[serde(rename = "desc")]
     pub description: String,
     #[serde(rename = "idLabels")]
@@ -20,6 +22,7 @@ impl Card {
             id: String::new(),
             name: name.to_string(),
             id_list: "".to_string(),
+            id_board: "".to_string(),
             description: description,
             labels: Vec::new(),
         }
@@ -35,6 +38,10 @@ impl Card {
 
     pub async fn add_label(self, label: &Label) -> Option<Card> {
         Client::get().add_label_to_card(self, &label.id).await
+    }
+
+    pub async fn get_board(&self) -> Option<Board> {
+        Client::get().get_board_by_id(&self.id_board).await
     }
 
     pub async fn add_comment(self, comment: &str) -> Option<Card> {
