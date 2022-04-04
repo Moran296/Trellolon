@@ -15,26 +15,9 @@ mod tests {
         let l = b.get_by_name("List1").await.unwrap();
         println!("{:#?}", l);
 
-        let c = l.get_by_name("Card1").await.unwrap();
+        let c: Card = l.get_by_name("Card1").await.unwrap();
 
-        let b_from_card = c.get_board().await.unwrap();
-        println!("{b_from_card:#?}");
-
-
-        let list = match c.get_father().await {
-            Some(list) => list,
-            _ => panic!("No list found"),
-        };
-        let board = match list.get_father().await {
-            Some(board) => board,
-            _ => panic!("No board found"),
-        };
-        let labels = match board.get_labels().await {
-            Some(labels) => labels,
-            _ => panic!("No labels found"),
-        };      
-
-        println!("{:#?}", labels);
+        println!("{:#?}", c);
 
         assert!(true);
     }

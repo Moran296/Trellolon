@@ -38,17 +38,17 @@ impl fmt::Display for LabelColor {
 pub struct Label {
     pub id: String,
     pub name: String,
-    pub color: String,
+    pub color: Option<String>,
     #[serde(rename = "idBoard")]
     pub board_id: String,
 }
 
 impl Label {
-    pub fn new(name: &str, color: LabelColor) -> Label {
+    pub fn new(name: &str, color: Option<LabelColor>) -> Label {
         Label {
             id: String::new(),
             name: name.to_string(),
-            color: color.to_string(),
+            color: color.map(|color| color.to_string()),
             board_id: String::new(),
         }
     }

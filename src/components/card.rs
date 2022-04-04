@@ -1,4 +1,4 @@
-use crate::{client::Client, Component, Creatable, Label, List, Board};
+use crate::{client::Client, Board, Component, Creatable, Label, List};
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
@@ -12,8 +12,8 @@ pub struct Card {
     pub id_board: String,
     #[serde(rename = "desc")]
     pub description: String,
-    #[serde(rename = "idLabels")]
-    pub labels: Vec<String>,
+    #[serde(rename = "labels")]
+    pub labels: Vec<Label>,
 }
 
 impl Card {
@@ -94,7 +94,11 @@ impl Component for Card {
     type Child = Label;
 
     async fn get_all(&self) -> Option<Vec<Self::Child>> {
-        Client::get().get_card_labels(&self).await
+        if self.labels.is_empty() {
+            None
+        } else {
+            Some(self.labels.clone())
+        }
     }
 
     fn name(&self) -> String {

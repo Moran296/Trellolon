@@ -41,6 +41,9 @@ impl Board {
             return true;
         }
 
-        labels.unwrap().iter().all(|label| label.color != color)
+        labels
+            .unwrap()
+            .iter()
+            .all(|label| label.color.is_none() || label.color.as_ref().unwrap() != color)
     }
 }

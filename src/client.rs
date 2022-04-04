@@ -92,7 +92,11 @@ impl Client {
 
         let filtered: Vec<Card> = cards
             .iter()
-            .filter(|card| card.labels.iter().any(|label_id| label_id == &label.id))
+            .filter(|card| {
+                card.labels
+                    .iter()
+                    .any(|label_iter| label_iter.id == label.id)
+            })
             .cloned()
             .collect();
 
@@ -104,7 +108,11 @@ impl Client {
     }
 
     pub async fn get_labels(&self, board_id: &str) -> Option<Vec<Label>> {
-        let url = format!("{REQ_PREFIX}/boards/{board_id}/labels/?key={}&token={}", KEY.as_str(), TOKEN.as_str() );
+        let url = format!(
+            "{REQ_PREFIX}/boards/{board_id}/labels/?key={}&token={}",
+            KEY.as_str(),
+            TOKEN.as_str()
+        );
         println!("{url}");
 
         let req = self.client.get(&url); //.form(&self.auth);
@@ -123,26 +131,6 @@ impl Client {
         let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
         let label = resp.json().await.ok()?;
         Some(label)
-    }
-
-    pub async fn get_card_labels(&self, card: &Card) -> Option<Vec<Label>> {
-        if !card.has_labels() {
-            return None;
-        }
-
-        let mut labels: Vec<Label> = Vec::new();
-        for label_id in &card.labels {
-            let label = self.get_label_by_id(&label_id).await;
-            if let Some(label) = label {
-                labels.push(label);
-            }
-        }
-
-        if labels.is_empty() {
-            return None;
-        }
-
-        Some(labels)
     }
 
     pub async fn create_list(&self, board_id: &str, name: &str) -> Option<List> {
@@ -185,7 +173,8 @@ impl Client {
         let url = format!("{REQ_PREFIX}/labels?");
         let form: Vec<(&str, &str)> = vec![
             ("name", &label.name),
-            ("color", &label.color),
+            //TODO how to give color?
+            //("color", &label.color),
             ("idBoard", board_id),
             self.auth[0],
             self.auth[1],
