@@ -52,6 +52,10 @@ impl Label {
             board_id: String::new(),
         }
     }
+
+    pub async fn get_from_board(board_id: &str) -> Option<Vec<Self>> {
+        Client::get().get_labels(board_id).await
+    }
 }
 
 #[async_trait]

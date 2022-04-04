@@ -113,15 +113,8 @@ impl Client {
             KEY.as_str(),
             TOKEN.as_str()
         );
-        println!("{url}");
 
-        let req = self.client.get(&url); //.form(&self.auth);
-        println!("{req:#?}");
-
-        let resp = req.send().await.ok()?;
-
-        println!("{resp:#?}");
-
+        let resp = self.client.get(&url).form(&self.auth).send().await.ok()?;
         let labels = resp.json().await.ok()?;
         Some(labels)
     }
