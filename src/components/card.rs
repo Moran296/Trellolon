@@ -66,6 +66,10 @@ impl Card {
 
         Some(texts)
     }
+
+    pub async fn move_to_list(self, list: List) -> Option<Card> {
+        Client::get().move_card_to_list(&self.id, &list.id).await
+    }
 }
 
 #[async_trait]

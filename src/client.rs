@@ -73,6 +73,15 @@ impl Client {
         Some(cards)
     }
 
+    pub async fn move_card_to_list(&self, card_id: &str, list_id: &str) -> Option<Card> {
+        let url = format!("{REQ_PREFIX}/cards/{card_id}?");
+        let resp = self.client.put(&url).form(&[("idList", &list_id)]).form(&self.auth).send().await.ok()?;
+
+        println!("---- {:#?}", resp);
+        let card = resp.json().await.ok()?;
+        Some(card)
+    }
+
     pub async fn get_board_cards(&self, board_id: &str) -> Option<Vec<Card>> {
         let lists = self.get_lists(board_id).await?;
         let mut cards = Vec::new();
