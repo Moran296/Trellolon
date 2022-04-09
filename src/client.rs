@@ -74,9 +74,8 @@ impl Client {
     }
 
     pub async fn move_card_to_list(&self, card_id: &str, list_id: &str) -> Option<Card> {
-        let url = format!("{REQ_PREFIX}/cards/{card_id}?");
-        let resp = self.client.put(&url).form(&[("idList", &list_id)]).form(&self.auth).send().await.ok()?;
-
+        let url = format!("{REQ_PREFIX}/cards/{card_id}?idList={list_id}");
+        let resp = self.client.put(&url).form(&self.auth).send().await.ok()?;
         let card = resp.json().await.ok()?;
         Some(card)
     }
