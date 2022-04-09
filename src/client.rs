@@ -77,7 +77,6 @@ impl Client {
         let url = format!("{REQ_PREFIX}/cards/{card_id}?");
         let resp = self.client.put(&url).form(&[("idList", &list_id)]).form(&self.auth).send().await.ok()?;
 
-        println!("---- {:#?}", resp);
         let card = resp.json().await.ok()?;
         Some(card)
     }
