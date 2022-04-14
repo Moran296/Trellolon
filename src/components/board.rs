@@ -31,6 +31,10 @@ impl Board {
         Client::get().get_board(name).await
     }
 
+    pub async fn get_all_boards() -> Option<Vec<Self>> {
+        Client::get().get_boards().await
+    }
+
     pub async fn get_labels(&self) -> Option<Vec<Label>> {
         Client::get().get_labels(&self.id).await
     }
